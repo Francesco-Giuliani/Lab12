@@ -54,6 +54,8 @@ public class Simulator {
 		//RESULTS
 		this.numFailures =0;
 		this.avgLevel = 0.0;
+		this.dailyLevels= new ArrayList<>();
+		this.dailyOutputs= new ArrayList<>();
 	}
 	
 	public void run() {

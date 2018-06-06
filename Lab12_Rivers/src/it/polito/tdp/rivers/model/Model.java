@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import it.polito.tdp.rivers.db.RiversDAO;
+import it.polito.tdp.rivers.simulation.Simulator;
 
 public class Model {
 
@@ -20,6 +21,8 @@ public class Model {
 	private River currentlySelectedRiver;
 	
 	private RiversDAO rdao;
+	
+	private Simulator sim;
 	
 	public Model() {
 		this.rdao = new RiversDAO();
@@ -69,6 +72,20 @@ public class Model {
 
 	public RiversDAO getRdao() {
 		return rdao;
+	}
+
+	public void simulate(double k) {
+		sim = new Simulator();
+		sim.inti(k, this.currentlySelectedRiver);
+		sim.run();
+	}
+
+	public String printSimulationResults() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("Start level: %f AVEGARE FLUX IN: %f\n", sim.getSTARTLEVEL(), sim.getAvgInFlux()));
+		sb.append(String.format("AVERAGE LEVEL: %f NUM FAILURES: %d", sim.getAvgLevel(), sim.getNumFailures()));
+
+		return sb.toString();
 	}
 	
 	

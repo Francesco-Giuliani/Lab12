@@ -67,8 +67,23 @@ public class RiversController {
 
 	@FXML
     void doSimulation(ActionEvent event) {
-
 		
+		double k =0.0;
+		
+		if(model.getCurrentlySelectedRiver()==null) {
+			this.txtResult.setText("No rivers selected. Select a river from the box\n");
+			return;
+		}
+		String kstr = this.txtK.getText();
+		try {
+			k =Double.parseDouble(kstr);
+		}catch(Exception e) {
+			e.printStackTrace();
+			this.txtResult.appendText("Type a double value for k.\n");
+			return;
+		}
+		model.simulate(k);
+		this.txtResult.appendText(model.printSimulationResults()+"\n");
     }
 
     @FXML

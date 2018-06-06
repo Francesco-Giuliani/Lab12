@@ -9,7 +9,7 @@ public class TestSimulator {
 	public static void main(String[] args) {
 		Simulator sim = new Simulator();
 		
-		sim.inti(0.5, new River(1, "Po'", 42.0, null, null));
+		sim.inti(1, new River(1, "Po'", 50.0, null, null));
 		PriorityQueue<Day> queue = sim.getQueue();
 		
 		Day[] arr = new Day[10];
