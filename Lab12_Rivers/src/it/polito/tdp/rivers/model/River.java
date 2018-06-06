@@ -1,21 +1,39 @@
 package it.polito.tdp.rivers.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polito.tdp.rivers.db.RiversDAO;
+
 public class River {
+	
 	private int id;
 	private String name;
 	private double flowAvg;
 	private List<Flow> flows;
+	private RiversDAO rdao = new RiversDAO();
 	
 	public River(int id) {
 		this.id = id;
+		this.flows = new ArrayList<>();
+		this.flowAvg = -1.0;
 	}
 
 	public River(int id, String name) {
 		this.id = id;
 		this.name = name;
+		this.flows = new ArrayList<>();
+		this.flowAvg = -1.0;
+	}
+
+	public River(int id, String name, double flowAvg, List<Flow> flows, RiversDAO rdao) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.flowAvg = flowAvg;
+		this.flows = flows;
+		this.rdao = rdao;
 	}
 
 	public String getName() {
@@ -25,33 +43,43 @@ public class River {
 	public int getId() {
 		return id;
 	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 	public double getFlowAvg() {
+		if(this.flowAvg == -1.0) {
+			this.flows = this.getFlows();
+			this.flowAvg = this.calculateAvg();
+		}
 		return flowAvg;
 	}
 
-	public void setFlowAvg(double flowAvg) {
-		this.flowAvg = flowAvg;
-	}
-
-	public void setFlows(List<Flow> flows) {
-		this.flows = flows;
-	}
 
 	public List<Flow> getFlows() {
-		if (flows == null)
-			flows = new ArrayList<Flow>();
 		return flows;
 	}
+	
+	public void updateAllData(List<Flow>flows) {
+		this.flows = flows;
+		this.flowAvg = this.calculateAvg();
+	}
 
+	private double calculateAvg() {
+		if(this.flows == null || flows.isEmpty())
+			return -0.1;
+		double sum= 0.0;
+		for(Flow f: this.flows) {
+			sum += f.getFlow();
+		}
+		return sum/this.flows.size();
+	}
+	
+	public LocalDate getStartDate() {
+		return this.flows.get(0).getDay();
+	}
+
+	public LocalDate getEndDate() {
+		return this.flows.get(this.flows.size()-1).getDay();
+	}
+	
 	@Override
 	public String toString() {
 		return name;
@@ -78,4 +106,7 @@ public class River {
 			return false;
 		return true;
 	}
+
+
+
 }
